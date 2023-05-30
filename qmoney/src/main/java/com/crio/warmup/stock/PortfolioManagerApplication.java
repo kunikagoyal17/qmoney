@@ -2,29 +2,30 @@
 package com.crio.warmup.stock;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream.GetField;
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import com.crio.warmup.stock.dto.*;
-import com.crio.warmup.stock.log.UncaughtExceptionHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+//import java.io.File;
+//import java.io.IOException;
+//import java.io.ObjectInputStream.GetField;
+//import java.net.URISyntaxException;
+//import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+//import java.util.Collection;
+import java.util.Collections;
+import com.crio.warmup.stock.dto.*;
+//import com.crio.warmup.stock.log.UncaughtExceptionHandler;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+//import java.nio.file.Files;
+import java.nio.file.Paths;
+//import java.time.LocalDate;
+//import java.time.temporal.ChronoUnit;
+//import java.util.Arrays;
+//import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -36,9 +37,9 @@ import com.crio.warmup.stock.log.UncaughtExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.logging.log4j.ThreadContext;
-import org.springframework.asm.TypeReference;
-import java.util.stream.Stream;
-import org.apache.logging.log4j.ThreadContext;
+////import org.springframework.asm.TypeReference;
+///import java.util.stream.Stream;
+//import org.apache.logging.log4j.ThreadContext;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -203,10 +204,20 @@ public class PortfolioManagerApplication {
       PortfolioTrade trade, Double buyPrice, Double sellPrice) {
         Double totalReturn =0.0;
         totalReturn =(sellPrice - buyPrice) / buyPrice ;
+         // double startdate=(long)(trade.getPurchaseDate());
+        double total_num_years =ChronoUnit.DAYS.between(trade.getPurchaseDate(),endDate)/365.2422;
+      //u  LocalDate buying_date=trade.getPurchaseDate();
 
-        AnnualizedReturn = (1+totalReturn)^(1/total_num_years)-1;
+     // double total_num_years =(endDatbuying_date);
+      // Double annualizedReturn =0.0;
+      //annualizedReturn ar;
+      
+       Double annualizedreturn = Math.pow ((1+totalReturn),(1/total_num_years))-1;
+      // Double db =new Double(double value);
+      AnnualizedReturn annualized_Return = new AnnualizedReturn(trade.getSymbol(),annualizedreturn,totalReturn);
+      
 
-      return new AnnualizedReturn("", 0.0, 0.0);
+      return  annualized_Return;
   }
 
 

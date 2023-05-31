@@ -77,6 +77,11 @@ public class PortfolioManagerApplication {
     ObjectMapper mapper = new ObjectMapper();
     logger.info(mapper.writeValueAsString(object));
   }
+    
+  public  static String getToken(String token) {
+
+    return token;
+  }
 
   private static File resolveFileFromResources(String filename) throws URISyntaxException {
     return Paths.get(
@@ -241,5 +246,10 @@ public class PortfolioManagerApplication {
     printJsonObject(mainCalculateSingleReturn(args));
 
   }
+
+
+public static String getToken() {
+    return null;
+}
 }
 

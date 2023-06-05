@@ -1,4 +1,5 @@
 
+
 package com.crio.warmup.stock;
 
 
@@ -80,7 +81,7 @@ public class PortfolioManagerApplication {
     
   public  static String getToken(String token) {
 
-    return token;
+    return null;
   }
 
   private static File resolveFileFromResources(String filename) throws URISyntaxException {

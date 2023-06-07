@@ -46,6 +46,9 @@ import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerApplication {
 
+  private static final String _353701880D6D6B6F0BBA3BA087885DFA9F669552 = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+
+
   public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
      File file =resolveFileFromResources( args[0]);
      ObjectMapper ob =getObjectMapper();
@@ -114,7 +117,7 @@ public class PortfolioManagerApplication {
 
   public static List<String> mainReadQuotes(String[] args) throws IOException, URISyntaxException {
     // return Collections.emptyList();
-    final String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+    final String token = _353701880D6D6B6F0BBA3BA087885DFA9F669552;
     LocalDate localDate= LocalDate.parse(args[1]);
     List<PortfolioTrade> trades=readTradesFromJson(args[0]);
     RestTemplate rt=new RestTemplate();

@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import com.crio.warmup.stock.dto.PortfolioTrade;
-import com.crio.warmup.stock.dto.TiingoCandle;
-import com.crio.warmup.stock.dto.TotalReturnsDto;
 import com.crio.warmup.stock.log.UncaughtExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -47,6 +44,7 @@ import org.springframework.web.client.RestTemplate;
 public class PortfolioManagerApplication {
 
   private static final String _353701880D6D6B6F0BBA3BA087885DFA9F669552 = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+  private static final List<AnnualizedReturn> AnnualizeReturn = null;
 
 
   public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
@@ -179,22 +177,34 @@ public class PortfolioManagerApplication {
   //  Ensure all tests are passing using below command
   //  ./gradlew test --tests ModuleThreeRefactorTest
   static Double getOpeningPriceOnStartDate(List<Candle> candles) {
+    candles= new ArrayList<Candle>();
+    
      return 0.0;
   }
 
 
-  public static Double getClosingPriceOnEndDate(List<Candle> candles) {
-     return 0.0;
+  public static Double getClosingPriceOnEndDate(List<Candle> candles) 
+  {  
+    candles= new ArrayList<Candle>();
+                  
+    return 0.0;
   }
 
 
   public static List<Candle> fetchCandles(PortfolioTrade trade, LocalDate endDate, String token) {
+     
      return Collections.emptyList();
   }
 
   public static List<AnnualizedReturn> mainCalculateSingleReturn(String[] args)
       throws IOException, URISyntaxException {
-     return Collections.emptyList();
+      //  Double totalReturn =0.0;
+       // Object trade;
+      //  int endDate;
+      //  totalReturn =((((Object) trade).getPurchase()) - endDate) / endDate) ;
+     // List<AnnualizedReturn>  AnnualizedReturn= Math.pow((1+totalReturn),(1/total_num_years))-1;
+
+     return AnnualizeReturn;
   }
 
   // TODO: CRIO_TASK_MODULE_CALCULATIONS

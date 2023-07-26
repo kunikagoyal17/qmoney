@@ -43,8 +43,8 @@ import org.springframework.web.client.RestTemplate;
 
 public class PortfolioManagerApplication {
 
-  private static final String _353701880D6D6B6F0BBA3BA087885DFA9F669552 = "353701880d6d6b6f0bba3ba087885dfa9f669552";
-  private static final List<AnnualizedReturn> AnnualizeReturn = null;
+  private static   String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+  private static   List<AnnualizedReturn> AnnualizedReturn = null;
 
 
   public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
@@ -80,10 +80,6 @@ public class PortfolioManagerApplication {
     logger.info(mapper.writeValueAsString(object));
   }
     
-  public  static String getToken(String token) {
-
-    return null;
-  }
 
   private static File resolveFileFromResources(String filename) throws URISyntaxException {
     return Paths.get(
@@ -115,7 +111,7 @@ public class PortfolioManagerApplication {
 
   public static List<String> mainReadQuotes(String[] args) throws IOException, URISyntaxException {
     // return Collections.emptyList();
-    final String token = _353701880D6D6B6F0BBA3BA087885DFA9F669552;
+    final String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
     LocalDate localDate= LocalDate.parse(args[1]);
     List<PortfolioTrade> trades=readTradesFromJson(args[0]);
     RestTemplate rt=new RestTemplate();
@@ -177,34 +173,53 @@ public class PortfolioManagerApplication {
   //  Ensure all tests are passing using below command
   //  ./gradlew test --tests ModuleThreeRefactorTest
   static Double getOpeningPriceOnStartDate(List<Candle> candles) {
-    candles= new ArrayList<Candle>();
+        return candles.get(0).getOpen();
+
     
-     return 0.0;
+    
   }
 
 
   public static Double getClosingPriceOnEndDate(List<Candle> candles) 
   {  
-    candles= new ArrayList<Candle>();
+        return candles.get(candles.size()-1).getClose();
+
                   
-    return 0.0;
+    
   }
 
 
   public static List<Candle> fetchCandles(PortfolioTrade trade, LocalDate endDate, String token) {
      
-     return Collections.emptyList();
-  }
+    RestTemplate rt = new RestTemplate();
+    String Url = prepareUrl(trade, endDate, token);
+    TiingoCandle[] tc = rt.getForObject(Url, TiingoCandle[].class);
+    return Arrays.asList(tc); 
+    //return null;
+    }
 
   public static List<AnnualizedReturn> mainCalculateSingleReturn(String[] args)
       throws IOException, URISyntaxException {
+        File f = resolveFileFromResources(args[0]);
+        ObjectMapper om = getObjectMapper();
+        PortfolioTrade[] trades = om.readValue(f, PortfolioTrade[].class);
+        List<AnnualizedReturn> ans = new ArrayList<>();
+        LocalDate localDate = LocalDate.parse(args[1]);
+        // after this part loop through the trades and use fetch candles method to fetch the list of candles 
+        // add in the arraylist of annualisedReturns        
+// if (listOfCandleResponse == 0 ) { continue; }
+      // come out of the loop and then use comparator to sort the annualized returns and then return.
+
+
+
+
       //  Double totalReturn =0.0;
        // Object trade;
       //  int endDate;
       //  totalReturn =((((Object) trade).getPurchase()) - endDate) / endDate) ;
      // List<AnnualizedReturn>  AnnualizedReturn= Math.pow((1+totalReturn),(1/total_num_years))-1;
 
-     return AnnualizeReturn;
+     return ans;
   }
 
   // TODO: CRIO_TASK_MODULE_CALCULATIONS
@@ -239,16 +254,9 @@ public class PortfolioManagerApplication {
       return  annualized_Return;
   }
 
-
-
-
-
-
-
-
-
-
-
+public static String getToken(){
+  return token;
+}
 
 
   public static void main(String[] args) throws Exception {
@@ -262,8 +270,6 @@ public class PortfolioManagerApplication {
   }
 
 
-public static String getToken() {
-    return null;
-}
+
 }
 

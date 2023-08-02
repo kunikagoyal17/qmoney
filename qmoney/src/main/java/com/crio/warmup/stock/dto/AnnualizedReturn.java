@@ -1,6 +1,8 @@
 
 package com.crio.warmup.stock.dto;
 
+import java.time.LocalDate;
+
 public class AnnualizedReturn {
 
   private final String symbol;
@@ -13,7 +15,10 @@ public class AnnualizedReturn {
     this.totalReturns = totalReturns;
   }
 
-  public String getSymbol() {
+  public AnnualizedReturn(LocalDate localDate, PortfolioTrade[] trades, Double openingprice,
+        Double closingprice) {}
+
+public String getSymbol() {
     return symbol;
   }
 

@@ -2,6 +2,7 @@
 package com.crio.warmup.stock.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class PortfolioTrade {
 
@@ -57,5 +58,7 @@ public class PortfolioTrade {
     return tradeType;
   }
   //solution
+
+public List<Candle> fetchCandles(PortfolioTrade[] trades, LocalDate localDate, String token) {}
 
 }

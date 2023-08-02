@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 //import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import com.crio.warmup.stock.dto.*;
 //import com.crio.warmup.stock.log.UncaughtExceptionHandler;
 //import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,9 +45,6 @@ import org.springframework.web.client.RestTemplate;
 public class PortfolioManagerApplication {
 
   private static   String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
-  private static   List<AnnualizedReturn> AnnualizedReturn = null;
-
-
   public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
      File file =resolveFileFromResources( args[0]);
      ObjectMapper ob =getObjectMapper();
@@ -205,23 +203,36 @@ public class PortfolioManagerApplication {
         PortfolioTrade[] trades = om.readValue(f, PortfolioTrade[].class);
         List<AnnualizedReturn> ans = new ArrayList<>();
         LocalDate localDate = LocalDate.parse(args[1]);
+        List <Candle> candle = new ArrayList<Candle>();
+        Double Openingprice =0.0;
+        Double closingprice =0.0;
+       // AnnualizedReturn annualizedReturn = new 
+        for(PortfolioTrade t :  trades)
+        {
+        
+          candle =  t.fetchCandles(trades, localDate ,token);
+          
+           Openingprice= getOpeningPriceOnStartDate(candle);
+
+           closingprice =getClosingPriceOnEndDate(candle);
+           AnnualizedReturn  annualizedReturn  = calculateAnnualizedReturns(localDate, trades, Openingprice ,closingprice);
+           
+          
+        }
+
+    
+        Comparator c =Collections.reverseOrder();
+        Collections.sort(annualizedReturn,c);
+        return annualizedReturn;
+      }
+
+
+        
         // after this part loop through the trades and use fetch candles method to fetch the list of candles 
         // add in the arraylist of annualisedReturns        
-// if (listOfCandleResponse == 0 ) { continue; }
-      // come out of the loop and then use comparator to sort the annualized returns and then return.
-
-
-
-
-      //  Double totalReturn =0.0;
-       // Object trade;
-      //  int endDate;
-      //  totalReturn =((((Object) trade).getPurchase()) - endDate) / endDate) ;
-     // List<AnnualizedReturn>  AnnualizedReturn= Math.pow((1+totalReturn),(1/total_num_years))-1;
-
-     return ans;
-  }
-
+        // if (listOfCandleResponse == 0 ) { continue; }
+      // come out of the loop and then use comparator to sort the annualized returns and then return.   
+  
   // TODO: CRIO_TASK_MODULE_CALCULATIONS
   //  Return the populated list of AnnualizedReturn for all stocks.
   //  Annualized returns should be calculated in two steps:

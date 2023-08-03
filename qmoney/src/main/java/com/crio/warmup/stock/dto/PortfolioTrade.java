@@ -59,8 +59,8 @@ public class PortfolioTrade {
   }
   //solution
 
-public List<Candle> fetchCandles(PortfolioTrade[] trades, LocalDate localDate, String token) {
-  
-}
+//public List<Candle> fetchCandles(PortfolioTrade[] trades, LocalDate localDate, String token) {
+
+//}
 
 }

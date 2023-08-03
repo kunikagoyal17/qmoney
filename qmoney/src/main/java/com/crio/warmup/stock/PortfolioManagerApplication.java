@@ -42,6 +42,21 @@ import org.apache.logging.log4j.ThreadContext;
 import org.springframework.web.client.RestTemplate;
 
 
+
+
+
+
+class annualListComparator implements Comparator <AnnualizedReturn>{
+  @Override
+
+  public int compare(AnnualizedReturn t1,AnnualizedReturn t2)
+  {
+    if(t1.getAnnualizedReturn()<t2.getAnnualizedReturn()) return 0;
+    else if(t1.getAnnualizedReturn() < t2.getAnnualizedReturn()) return 1;
+    return -1;
+  }
+ }
+
 public class PortfolioManagerApplication {
 
   private static   String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
@@ -152,7 +167,7 @@ public class PortfolioManagerApplication {
      return "https://api.tiingo.com/tiingo/daily/"   + trade.getSymbol() + "/prices?startDate=" + trade.getPurchaseDate() + "&endDate=" + endDate + "&token=" + token;
   }
 
-       class annualListComparator implements Comparator <AnnualizedReturn>{
+      /*  class annualListComparator implements Comparator <AnnualizedReturn>{
         @Override
 
         public int compare(AnnualizedReturn t1,AnnualizedReturn t2)
@@ -161,7 +176,7 @@ public class PortfolioManagerApplication {
           else if(t1.getAnnualizedReturn() < t2.getAnnualizedReturn()) return 1;
           return -1;
         }
-       }
+       }*/
 
 
 
@@ -222,7 +237,7 @@ public class PortfolioManagerApplication {
         for(PortfolioTrade t :  trades)
         {
         
-          candle =  t.fetchCandles(trades, localDate ,token);
+          candle =  fetchCandles(t, localDate ,token);
           
            Openingprice= getOpeningPriceOnStartDate(candle);
 
@@ -232,7 +247,7 @@ public class PortfolioManagerApplication {
           
         }
        // Comparator c =Collections.reverseOrder();
-        Collections.sort(annualList,  new annualListComparator());
+        Collections.sort(annualList,  new  annualListComparator());
         return annualList;
       }
 

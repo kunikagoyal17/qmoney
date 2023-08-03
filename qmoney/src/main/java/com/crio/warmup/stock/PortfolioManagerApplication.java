@@ -213,7 +213,7 @@ public class PortfolioManagerApplication {
         ObjectMapper om = getObjectMapper();
         List <AnnualizedReturn> annualList = new ArrayList<>();
         PortfolioTrade[] trades = om.readValue(f, PortfolioTrade[].class);
-        List<AnnualizedReturn> ans = new ArrayList<>();
+       // List<AnnualizedReturn>  = new ArrayList<>();
         LocalDate localDate = LocalDate.parse(args[1]);
         List <Candle> candle = new ArrayList<Candle>();
         Double Openingprice =0.0;
@@ -232,7 +232,7 @@ public class PortfolioManagerApplication {
           
         }
        // Comparator c =Collections.reverseOrder();
-        Collections.sort(annualList,new annualListComparator());
+        Collections.sort(annualList,  new annualListComparator());
         return annualList;
       }
 
@@ -259,17 +259,17 @@ public class PortfolioManagerApplication {
 
   public static AnnualizedReturn calculateAnnualizedReturns(LocalDate endDate,
       PortfolioTrade trade, Double buyPrice, Double sellPrice) {
-        Double totalReturn =0.0;
+        double totalReturn =0.0;
         totalReturn =(sellPrice - buyPrice) / buyPrice ;
          // double startdate=(long)(trade.getPurchaseDate());
-        double total_num_years =ChronoUnit.DAYS.between(trade.getPurchaseDate(),endDate)/365.2422;
+        double total_num_years =ChronoUnit.DAYS.between(trade.getPurchaseDate(),endDate)/365.24;
       //u  LocalDate buying_date=trade.getPurchaseDate();
 
      // double total_num_years =(endDatbuying_date);
       // Double annualizedReturn =0.0;
       //annualizedReturn ar;
       
-       Double annualizedreturn = Math.pow ((1+totalReturn),(1/total_num_years))-1;
+       double annualizedreturn = Math.pow ((1+totalReturn),(1/total_num_years))-1;
       // Double db =new Double(double value);
       AnnualizedReturn annualized_Return = new AnnualizedReturn(trade.getSymbol(),annualizedreturn,totalReturn);
       

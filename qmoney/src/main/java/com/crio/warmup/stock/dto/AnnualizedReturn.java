@@ -15,8 +15,11 @@ public class AnnualizedReturn {
     this.totalReturns = totalReturns;
   }
 
-  public AnnualizedReturn(LocalDate localDate, PortfolioTrade[] trades, Double openingprice,
-        Double closingprice) {}
+  public  AnnualizedReturn(LocalDate localDate, PortfolioTrade[] trades, Double openingprice,
+        Double closingprice) {
+          return null ;
+        }
+         
 
 public String getSymbol() {
     return symbol;

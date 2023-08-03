@@ -152,6 +152,17 @@ public class PortfolioManagerApplication {
      return "https://api.tiingo.com/tiingo/daily/"   + trade.getSymbol() + "/prices?startDate=" + trade.getPurchaseDate() + "&endDate=" + endDate + "&token=" + token;
   }
 
+       class annualListComparator implements Comparator <AnnualizedReturn>{
+        @Override
+
+        public int compare(AnnualizedReturn t1,AnnualizedReturn t2)
+        {
+          if(t1.getAnnualizedReturn()<t2.getAnnualizedReturn()) return 0;
+          else if(t1.getAnnualizedReturn() < t2.getAnnualizedReturn()) return 1;
+          return -1;
+        }
+       }
+
 
 
   // TODO: CRIO_TASK_MODULE_CALCULATIONS
@@ -200,6 +211,7 @@ public class PortfolioManagerApplication {
       throws IOException, URISyntaxException {
         File f = resolveFileFromResources(args[0]);
         ObjectMapper om = getObjectMapper();
+        List <AnnualizedReturn> annualList = new ArrayList<>();
         PortfolioTrade[] trades = om.readValue(f, PortfolioTrade[].class);
         List<AnnualizedReturn> ans = new ArrayList<>();
         LocalDate localDate = LocalDate.parse(args[1]);
@@ -215,15 +227,13 @@ public class PortfolioManagerApplication {
            Openingprice= getOpeningPriceOnStartDate(candle);
 
            closingprice =getClosingPriceOnEndDate(candle);
-           AnnualizedReturn  annualizedReturn  = calculateAnnualizedReturns(localDate, trades, Openingprice ,closingprice);
+           annualList.add(calculateAnnualizedReturns(localDate, t, Openingprice ,closingprice));
            
           
         }
-
-    
-        Comparator c =Collections.reverseOrder();
-        Collections.sort(annualizedReturn,c);
-        return annualizedReturn;
+       // Comparator c =Collections.reverseOrder();
+        Collections.sort(annualList,new annualListComparator());
+        return annualList;
       }
 
 
@@ -233,6 +243,8 @@ public class PortfolioManagerApplication {
         // if (listOfCandleResponse == 0 ) { continue; }
       // come out of the loop and then use comparator to sort the annualized returns and then return.   
   
+
+
   // TODO: CRIO_TASK_MODULE_CALCULATIONS
   //  Return the populated list of AnnualizedReturn for all stocks.
   //  Annualized returns should be calculated in two steps:

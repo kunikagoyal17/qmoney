@@ -95,29 +95,7 @@ public class PortfolioManagerImpl implements PortfolioManager {
   return token;
 }*/
 
-  /*@Override
-public static List<AnnualizedReturn> mainCalculateSingleReturn(String[] args, PortfolioTrade[] portfolioTrades)
-throws IOException, URISyntaxException {
- // File f = resolveFileFromRes
-  {
-   File f = resolveFileFromResources(args[0]);
-    ObjectMapper om = getObjectMapper();
-    List <AnnualizedReturn> annualList = new ArrayList<>();
-    PortfolioTrade[] trades = om.readValue(f, PortfolioTrade[].class);
-    List<AnnualizedReturn>  = new ArrayList<>();
-    LocalDate localDate = LocalDate.parse(args[1]);
-    List <Candle> candle = new ArrayList<Candle>();
-    Double Openingprice =0.0;
-    Double closingprice =0.0;
-   // AnnualizedReturn annualizedReturn = new 
-    for(PortfolioTrade t :  trades)
-    {
-    
-      candle =  fetchCandles(t, localDate ,token);
-      
-       Openingprice= getOpeningPriceOnStartDate(candle);
-
-  */
+  
 
   //CHECKSTYLE:OFF
 
@@ -126,7 +104,7 @@ throws IOException, URISyntaxException {
   //  Remember to fill out the buildUri function and use that.
 
 
-  public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to, RestTemplate restTemplate)
+  public List<Candle> getStockQuote(String symbol, LocalDate from, LocalDate to)
       throws JsonProcessingException {
         String tiingoRestURL =buildUri(symbol ,from ,to);
         TiingoCandle[] tiingoCandleArray =restTemplate.getForObject(tiingoRestURL, TiingoCandle[].class);
@@ -148,10 +126,53 @@ throws IOException, URISyntaxException {
             return uriTemplate;
   }
 
-/*   @Override
+
+
+
+
+  // start from here
+
+  public static String prepareUrl(PortfolioTrade trade, LocalDate endDate, String token) {
+    return "https://api.tiingo.com/tiingo/daily/"   + trade.getSymbol() + "/prices?startDate=" + trade.getPurchaseDate() + "&endDate=" + endDate + "&token=" + token;
+ }
+
+  public static List<Candle> fetchCandles(PortfolioTrade trade, LocalDate endDate, String token) {
+     
+    RestTemplate rt = new RestTemplate();
+    String Url = prepareUrl(trade, endDate, token);
+    TiingoCandle[] tc = rt.getForObject(Url, TiingoCandle[].class);
+    return Arrays.asList(tc); 
+    //return null;
+    }
+
+  @Override
   public List<AnnualizedReturn> calculateAnnualizedReturn(List<PortfolioTrade> portfolioTrades,
       LocalDate endDate) {
+        List <AnnualizedReturn> annualList = new ArrayList<>();
+        LocalDate localDate = LocalDate.parse(args[1]);
+        List <Candle> candle = new ArrayList<Candle>();
+        Double Openingprice =0.0;
+        Double closingprice =0.0;
+       // AnnualizedR
+        for(PortfolioTrade t :  portfolioTrades)
+        {
+        
+          candle =  fetchCandles(t, endDate, null);
+          
+           Openingprice= getOpeningPriceOnStartDate(candle);
+
+           closingprice =getClosingPriceOnEndDate(candle);
+           annualList.add(calculateAnnualizedReturns(localDate,t, Openingprice ,closingprice));
+           
+          
+        }
+       // Comparator c =Collections.reverseOrder();
+        //Collections.sort(annualList,  new  annualListComparator());
+        return annualList;
     // TODO Auto-generated method stub
-    return null;
-  }*/
+   // return null;
+  }
+  
+
+
 }

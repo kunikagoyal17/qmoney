@@ -148,7 +148,8 @@ public class PortfolioManagerImpl implements PortfolioManager {
   @Override
   public List<AnnualizedReturn> calculateAnnualizedReturn(List<PortfolioTrade> portfolioTrades,
       LocalDate endDate) {
-        List <AnnualizedReturn> annualList = new ArrayList<>();
+        List <AnnualizedReturn> annualList = new ArrayList<AnnualizedReturn>();
+       // int args;
         LocalDate localDate = LocalDate.parse(args[1]);
         List <Candle> candle = new ArrayList<Candle>();
         Double Openingprice =0.0;

@@ -1,9 +1,10 @@
 
 package com.crio.warmup.stock.portfolio;
 
-import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.SECONDS;
+///import static java.time.temporal.ChronoUnit.DAYS;
+//import static java.time.temporal.ChronoUnit.SECONDS;
 import java.io.IOException;
+import java.util.*;
 import java.net.URISyntaxException;
 import com.crio.warmup.stock.dto.AnnualizedReturn;
 import com.crio.warmup.stock.dto.Candle;
@@ -16,9 +17,10 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+//import java.util.Comparator;
 import java.util.List;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,10 +29,39 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.springframework.web.client.RestTemplate;
 
+
+
+
+
+
+
+
+
+
+
+
+
+/*class annualListComparator implements Comparator <AnnualizedReturn>{
+  @Override
+
+  public int compare(AnnualizedReturn t1,AnnualizedReturn t2)
+  {
+    if(t1.getAnnualizedReturn()< t2.getAnnualizedReturn()) return 0;
+    else if(t1.getAnnualizedReturn() < t2.getAnnualizedReturn()) return 1;
+    return -1;
+  }
+ }*/
+
+
 public class PortfolioManagerImpl implements PortfolioManager {
 
 
  RestTemplate restTemplate ;
+private CharSequence[] args;
+
+
+
+
 
   // Caution: Do not delete or modify the constructor, or else your build will break!
   // This is absolutely necessary for backward compatibility
@@ -120,17 +151,51 @@ public class PortfolioManagerImpl implements PortfolioManager {
      
   }
 
+  /* protected String buildUri(String symbol, LocalDate startDate, LocalDate endDate) {
+       String uriTemplate = "https://api.tiingo.com/tiingo/daily/$SYMBOL/prices?"
+            + "startDate=$STARTDATE&EendDate=$ENDDATE&token=$APIKEY";
+        String url =uriTemplate.replace("$SYMBOL", symbol).replace("$STARTDATE", startDate.toString()).replace("$ENDDATE", endDate.toString());
+           // replaceAll($SYMBOL)
+         // String  url = uriTemplate.replace("$SYMBOL" ,symbol).rep("$STARTDATE",startDate);
+
+
+            return url;
+  } */
   protected String buildUri(String symbol, LocalDate startDate, LocalDate endDate) {
-       String uriTemplate = "https:api.tiingo.com/tiingo/daily/$SYMBOL/prices?"
-            + "startDate=$STARTDATE&endDate=$ENDDATE&token=$APIKEY";
-            return uriTemplate;
+    
+    String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+    String uri = "https://api.tiingo.com/tiingo/daily/$SYMBOL/prices?"
+        + "startDate=$STARTDATE&endDate=$ENDDATE&token=$APIKEY";
+    return uri.replace("$APIKEY", token).replace("$SYMBOL", symbol)
+        .replace("$STARTDATE", startDate.toString())
+        .replace("$ENDDATE", endDate.toString());    
   }
 
 
 
 
-
   // start from here
+
+
+  /*private static   String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+  public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
+     File file =resolveFileFromResources( args[0]);
+     ObjectMapper ob =getObjectMapper();
+     PortfolioTrade [] trades = ob.readValue(file, PortfolioTrade[].class);
+    List<String> list=new ArrayList<String>();
+     for(PortfolioTrade trade : trades )
+     {
+     list.add(trade.getSymbol());
+    }
+
+     return list;
+  }*/
+  
+  
+
+  //public static String getToken(){
+  //  return token;
+  //}
 
   public static String prepareUrl(PortfolioTrade trade, LocalDate endDate, String token) {
     return "https://api.tiingo.com/tiingo/daily/"   + trade.getSymbol() + "/prices?startDate=" + trade.getPurchaseDate() + "&endDate=" + endDate + "&token=" + token;
@@ -142,7 +207,7 @@ public class PortfolioManagerImpl implements PortfolioManager {
     String Url = prepareUrl(trade, endDate, token);
     TiingoCandle[] tc = rt.getForObject(Url, TiingoCandle[].class);
     return Arrays.asList(tc); 
-    //return null;
+
     }
 
   @Override
@@ -150,25 +215,31 @@ public class PortfolioManagerImpl implements PortfolioManager {
       LocalDate endDate) {
         List <AnnualizedReturn> annualList = new ArrayList<AnnualizedReturn>();
        // int args;
-        LocalDate localDate = LocalDate.parse(args[1]);
-        List <Candle> candle = new ArrayList<Candle>();
+      //  LocalDate localDate = LocalDate.parse(args[1]);
+       LocalDate localDate = endDate;
+        List <Candle> candles = new ArrayList<Candle>();
         Double Openingprice =0.0;
         Double closingprice =0.0;
        // AnnualizedR
         for(PortfolioTrade t :  portfolioTrades)
         {
         
-          candle =  fetchCandles(t, endDate, null);
+          try {
+            candles =  getStockQuote(t.getSymbol(), t.getPurchaseDate(),localDate );
+          } catch (JsonProcessingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
           
-           Openingprice= getOpeningPriceOnStartDate(candle);
+           Openingprice= getOpeningPriceOnStartDate(candles);
 
-           closingprice =getClosingPriceOnEndDate(candle);
+           closingprice =getClosingPriceOnEndDate(candles);
            annualList.add(calculateAnnualizedReturns(localDate,t, Openingprice ,closingprice));
            
           
         }
-       // Comparator c =Collections.reverseOrder();
-        //Collections.sort(annualList,  new  annualListComparator());
+           //  Collections.sort.reverseOrder(annualList);
+      Collections.sort(annualList,  new  annualListComparator());
         return annualList;
     // TODO Auto-generated method stub
    // return null;

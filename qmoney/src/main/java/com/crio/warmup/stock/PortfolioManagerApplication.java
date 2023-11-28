@@ -59,7 +59,7 @@ class annualListComparator implements Comparator <AnnualizedReturn>{
 
 public class PortfolioManagerApplication {
 
-  private static   String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
+  public static String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
   public static List<String> mainReadFile(String[] args) throws IOException, URISyntaxException {
      File file =resolveFileFromResources( args[0]);
      ObjectMapper ob =getObjectMapper();
@@ -124,7 +124,6 @@ public class PortfolioManagerApplication {
 
   public static List<String> mainReadQuotes(String[] args) throws IOException, URISyntaxException {
     // return Collections.emptyList();
-    final String token = "353701880d6d6b6f0bba3ba087885dfa9f669552";
     LocalDate localDate= LocalDate.parse(args[1]);
     List<PortfolioTrade> trades=readTradesFromJson(args[0]);
     RestTemplate rt=new RestTemplate();

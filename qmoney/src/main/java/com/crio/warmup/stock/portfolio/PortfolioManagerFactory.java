@@ -11,10 +11,14 @@ public class PortfolioManagerFactory {
 
   public static PortfolioManager getPortfolioManager(RestTemplate restTemplate) {
 
-     return new PortfolioManagerImpl(restTemplate);
-  }
+    return new PortfolioManagerImpl(restTemplate);
+
+// public static PortfolioManager getPortfolioManager(RestTemplate restTemplate) {
+
+ // }
 
 
-
-
+ }
 }
+
+

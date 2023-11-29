@@ -21,7 +21,8 @@ public class AnnualizedReturn {
        // }
          
 
-public String getSymbol() {
+//public String getSymbol() {
+  public String getSymbol() {
     return symbol;
   }
 

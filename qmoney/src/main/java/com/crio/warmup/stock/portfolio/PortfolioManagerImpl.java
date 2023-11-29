@@ -6,6 +6,9 @@ package com.crio.warmup.stock.portfolio;
 import java.io.IOException;
 import java.util.*;
 import java.net.URISyntaxException;
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.SECONDS;
+
 import com.crio.warmup.stock.dto.AnnualizedReturn;
 import com.crio.warmup.stock.dto.Candle;
 import com.crio.warmup.stock.dto.PortfolioTrade;
@@ -21,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,9 +61,16 @@ import org.springframework.web.client.RestTemplate;
 public class PortfolioManagerImpl implements PortfolioManager {
 
 
- RestTemplate restTemplate ;
+ //public PortfolioManagerImpl(RestTemplate restTemplate2) {}
+
+
+
+RestTemplate restTemplate ;
 private CharSequence[] args;
 
+
+
+//public class PortfolioManagerImpl implements PortfolioManager {
 
 
 
@@ -168,8 +180,18 @@ private CharSequence[] args;
         + "startDate=$STARTDATE&endDate=$ENDDATE&token=$APIKEY";
     return uri.replace("$APIKEY", token).replace("$SYMBOL", symbol)
         .replace("$STARTDATE", startDate.toString())
-        .replace("$ENDDATE", endDate.toString());    
+        .replace("$ENDDATE", endDate.toString());   
+
+
   }
+
+
+
+
+
+  //private Comparator<AnnualizedReturn> getComparator() {
+   // return Comparator.comparing(AnnualizedReturn::getAnnualizedReturn).reversed();
+  //}
 
 
 
